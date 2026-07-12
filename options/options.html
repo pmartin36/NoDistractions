@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>No Distractions — Settings</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="page-header">
+        <img
+          class="logo-image"
+          src="../icons/logo.png"
+          alt="No Distractions — Focus &amp; Clarity"
+        />
+      </header>
+
+      <section class="add-site-card">
+        <h2>Add a site</h2>
+        <form id="add-site-form">
+          <input
+            id="add-domain-input"
+            type="text"
+            placeholder="e.g. youtube.com"
+            autocomplete="off"
+          />
+          <button type="submit">Add</button>
+        </form>
+        <p class="error" id="add-error" role="alert"></p>
+      </section>
+
+      <section>
+        <h2>Sites</h2>
+        <p class="empty-note" id="empty-note">
+          No sites yet — add one above to start scheduling allowed hours.
+        </p>
+        <div id="site-list"></div>
+      </section>
+    </div>
+
+    <template id="site-row-template">
+      <div class="site-row">
+        <div class="site-row-header">
+          <span class="site-domain"></span>
+          <label class="switch">
+            <input type="checkbox" class="enabled-toggle" />
+            <span class="switch-slider"></span>
+          </label>
+          <button type="button" class="delete-btn" title="Remove site">✕</button>
+        </div>
+
+        <div class="slider-wrap">
+          <div class="track-bg"></div>
+          <div class="track-highlight"></div>
+          <input type="range" class="range-start" min="0" max="1440" step="15" />
+          <input type="range" class="range-end" min="0" max="1440" step="15" />
+        </div>
+        <div class="time-labels">
+          <span class="start-label"></span>
+          <span class="sep">–</span>
+          <span class="end-label"></span>
+          <span class="allowed-note">allowed</span>
+        </div>
+
+        <p class="lock-note"></p>
+      </div>
+    </template>
+
+    <script src="options.js" type="module"></script>
+  </body>
+</html>

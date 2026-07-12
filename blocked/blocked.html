@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>No Distractions</title>
+    <link rel="stylesheet" href="blocked.css" />
+  </head>
+  <body>
+    <main class="card">
+      <div class="logo">
+        <img
+          class="logo-image"
+          src="../icons/logo.png"
+          alt="No Distractions — Focus &amp; Clarity"
+        />
+      </div>
+
+      <p class="site-line">
+        <span id="site-domain">this site</span> is off-limits right now.
+      </p>
+
+      <p class="instructions">
+        Type the following exactly to continue:
+      </p>
+      <p class="phrase-to-copy">
+        I am using this site for self improvement, not wasting time
+      </p>
+
+      <form id="unlock-form" autocomplete="off">
+        <input
+          id="phrase-input"
+          type="text"
+          placeholder="Type the phrase above exactly"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button type="submit" id="go-button">Go</button>
+      </form>
+
+      <p class="error" id="error-message" role="alert"></p>
+    </main>
+
+    <script src="blocked.js" type="module"></script>
+  </body>
+</html>

@@ -1,0 +1,137 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: radial-gradient(circle at 50% 20%, #1a1d24 0%, #0a0b0e 70%);
+  color: #f2f3f5;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+}
+
+.card {
+  width: min(480px, 90vw);
+  padding: 48px 40px;
+  text-align: center;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.logo-image {
+  width: min(340px, 100%);
+  height: auto;
+}
+
+.site-line {
+  font-size: 16px;
+  color: #b6b9c2;
+  margin: 0 0 24px;
+}
+
+#site-domain {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.instructions {
+  font-size: 14px;
+  color: #9a9da6;
+  margin: 0 0 8px;
+}
+
+.phrase-to-copy {
+  font-size: 15px;
+  font-style: italic;
+  color: #d7d9de;
+  background: #16181f;
+  border: 1px solid #262a35;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin: 0 0 24px;
+}
+
+#unlock-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#phrase-input {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 1px solid #2c303c;
+  background: #14161c;
+  color: #f2f3f5;
+}
+
+#phrase-input:focus {
+  outline: none;
+  border-color: #915de7;
+}
+
+#go-button {
+  padding: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  background: #915de7;
+  color: #fff;
+  cursor: pointer;
+}
+
+#go-button:hover {
+  background: #7a47d1;
+}
+
+#go-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.error {
+  min-height: 20px;
+  margin: 16px 0 0;
+  color: #ff6b6b;
+  font-size: 14px;
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translateX(-1px);
+  }
+  20%,
+  80% {
+    transform: translateX(2px);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translateX(-4px);
+  }
+  40%,
+  60% {
+    transform: translateX(4px);
+  }
+}
+
+.shake {
+  animation: shake 0.5s;
+}
