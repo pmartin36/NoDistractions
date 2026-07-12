@@ -7,10 +7,17 @@ const form = document.getElementById("unlock-form");
 const input = document.getElementById("phrase-input");
 const button = document.getElementById("go-button");
 const errorEl = document.getElementById("error-message");
+const phraseEl = document.getElementById("phrase-to-copy");
 
 if (domain) {
   domainEl.textContent = domain;
 }
+
+// The user has to type the phrase themselves, not copy/paste it.
+for (const eventName of ["copy", "cut", "contextmenu", "dragstart"]) {
+  phraseEl.addEventListener(eventName, (event) => event.preventDefault());
+}
+input.addEventListener("paste", (event) => event.preventDefault());
 
 function safeReturnUrl() {
   try {

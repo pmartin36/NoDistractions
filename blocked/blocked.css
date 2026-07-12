@@ -62,6 +62,10 @@ body {
   border-radius: 8px;
   padding: 12px 16px;
   margin: 0 0 24px;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 #unlock-form {
