@@ -9,7 +9,7 @@ A Chrome extension that lets you restrict distracting sites (YouTube, Reddit, et
 - **30-minute grace unlock** — typing the phrase correctly unlocks the site for 30 minutes, then it re-locks automatically, even on tabs that are already open.
 - **Tamper-locked editing** — while a site is currently in its blocked window, you can't loosen or delete its schedule from the options page. You can always add new sites.
 - **Domain + subdomain matching** — adding `youtube.com` also covers `www.youtube.com`, `m.youtube.com`, etc.
-- **Synced settings** — your site list syncs across Chrome installs via `chrome.storage.sync`.
+- **Synced settings** — your site list syncs across desktop Chrome installs (Windows/macOS/Linux/ChromeOS) signed into the same Google account via `chrome.storage.sync`. This does **not** include Chrome on Android or iOS, which don't run extensions.
 
 ## Installing (unpacked, until published to the Web Store)
 
