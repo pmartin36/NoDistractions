@@ -52,17 +52,36 @@ chrome.webNavigation.onBeforeNavigate.addListener((details) => {
   maybeRedirectTab(details.tabId, details.url);
 });
 
-async function recheckAllTabs() {
-  const tabs = await chrome.tabs.query({ url: ["http://*/*", "https://*/*"] });
-  for (const tab of tabs) {
-    if (tab.id === undefined) continue;
+// Blocking is conservative: only ever redirect the tab the user is actually
+// looking at. Background tabs are left alone until they're focused or navigated.
+async function checkActiveTab(windowId) {
+  const query = { active: true };
+  if (windowId === undefined) {
+    query.lastFocusedWindow = true;
+  } else {
+    query.windowId = windowId;
+  }
+  const [tab] = await chrome.tabs.query(query);
+  if (tab && tab.id !== undefined) {
     maybeRedirectTab(tab.id, tab.url);
   }
 }
 
+chrome.tabs.onActivated.addListener(({ tabId }) => {
+  chrome.tabs.get(tabId, (tab) => {
+    if (chrome.runtime.lastError || !tab || tab.id === undefined) return;
+    maybeRedirectTab(tab.id, tab.url);
+  });
+});
+
+chrome.windows.onFocusChanged.addListener((windowId) => {
+  if (windowId === chrome.windows.WINDOW_ID_NONE) return;
+  checkActiveTab(windowId);
+});
+
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === RECHECK_ALARM) {
-    recheckAllTabs();
+    checkActiveTab();
   }
 });
 

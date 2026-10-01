@@ -1,3 +1,10 @@
+import {
+  getSites,
+  getUnlocks,
+  findRuleForHostname,
+  isBlockedNow,
+} from "../lib/rules.js";
+
 const params = new URLSearchParams(location.search);
 const domain = params.get("site") || "";
 const returnUrl = params.get("return") || (domain ? `https://${domain}` : "");
@@ -40,6 +47,27 @@ function rejectAttempt(message) {
   input.classList.add("shake");
   input.focus();
 }
+
+// Freeing is aggressive: every blackout tab watches live state and sends
+// itself back to the site the moment it's allowed again, with no focus or
+// navigation needed. Covers the schedule window reopening, a grace unlock in
+// another tab, and the site being removed or disabled in options.
+async function returnIfFreed() {
+  if (!domain) return;
+  const [sites, unlocks] = await Promise.all([getSites(), getUnlocks()]);
+  const rule = findRuleForHostname(domain, sites);
+  if (!rule || !isBlockedNow(rule, unlocks)) {
+    location.href = safeReturnUrl();
+  }
+}
+
+chrome.storage.onChanged.addListener(() => {
+  returnIfFreed();
+});
+
+// Storage changes cover unlocks and schedule edits instantly; the interval
+// catches the schedule window simply reaching its reopen time.
+setInterval(returnIfFreed, 5000);
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();

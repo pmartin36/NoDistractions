@@ -6,7 +6,8 @@ A Chrome extension that lets you restrict distracting sites (YouTube, Reddit, et
 
 - **Per-site schedules** — pick a domain and drag a dual-handle slider to set its allowed hours (e.g. 9:00 AM – 11:00 PM). Outside that window, the site is blocked.
 - **Blackout page** — blocked navigations redirect to a full-tab screen requiring you to type *"I am using this site for self improvement, not wasting time"* exactly (case-sensitive) before continuing.
-- **30-minute grace unlock** — typing the phrase correctly unlocks the site for 30 minutes, then it re-locks automatically, even on tabs that are already open.
+- **30-minute grace unlock** — typing the phrase correctly unlocks the site for 30 minutes, then it re-locks on the tab you're on when the grace expires.
+- **Conservative locking, aggressive freeing** — a site is only sent to the blackout page on the tab you're actively viewing (on navigation, tab switch, or window focus); background tabs are left alone until you return to them. When a site becomes allowed again, every open blackout tab for it refreshes itself back to the site on its own, with no need to visit the tab.
 - **Tamper-locked editing** — while a site is currently in its blocked window, you can't loosen or delete its schedule from the options page. You can always add new sites.
 - **Domain + subdomain matching** — adding `youtube.com` also covers `www.youtube.com`, `m.youtube.com`, etc.
 - **Synced settings** — your site list syncs across desktop Chrome installs (Windows/macOS/Linux/ChromeOS) signed into the same Google account via `chrome.storage.sync`. This does **not** include Chrome on Android or iOS, which don't run extensions.
@@ -23,16 +24,16 @@ After pulling new changes, click the reload icon (⟳) on the extension's card i
 
 ## How it works
 
-- `background.js` — a Manifest V3 service worker. It watches navigations (`chrome.webNavigation`) and re-checks all open tabs once a minute (`chrome.alarms`) against each site's schedule, redirecting blocked tabs to the blackout page.
+- `background.js` — a Manifest V3 service worker. It watches navigations (`chrome.webNavigation`), tab activation, and window focus, and re-checks the active tab once a minute (`chrome.alarms`) against each site's schedule, redirecting it to the blackout page when blocked. It only ever redirects the tab you're currently viewing.
 - `lib/rules.js` — shared logic for domain matching, schedule/time-window math, and storage access, used by the background worker, options page, and blocked page.
-- `blocked/` — the blackout page shown for out-of-window navigations. Verifies the typed phrase via a message to the background worker and, on success, grants a 30-minute unlock before returning you to the original page.
+- `blocked/` — the blackout page shown for out-of-window navigations. Verifies the typed phrase via a message to the background worker and, on success, grants a 30-minute unlock before returning you to the original page. It also watches live state and sends itself back to the original page automatically once the site is allowed again.
 - `options/` — full-page site manager: add/remove sites, toggle them on/off, and drag each site's allowed-hours slider. Rows lock while their site is currently blocked.
 - `popup/` — small popup showing the current tab's status (allowed/blocked, time remaining) and a shortcut to the options page.
 
 ## Permissions
 
 - `storage` — save your site list (`chrome.storage.sync`) and temporary unlock state (`chrome.storage.local`).
-- `alarms` — periodic re-check of open tabs so a schedule boundary takes effect immediately, not just on next navigation.
+- `alarms` — periodic re-check of the active tab so a schedule boundary takes effect on the tab you're viewing, not just on next navigation.
 - `tabs`, `webNavigation`, and broad host permissions (`http://*/*`, `https://*/*`) — needed to detect and redirect navigations to whatever domains you add, since sites aren't known ahead of time.
 
 Nothing is sent off your machine — all state stays in Chrome's local/sync storage.
